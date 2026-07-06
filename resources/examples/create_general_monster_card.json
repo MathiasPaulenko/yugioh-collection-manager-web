@@ -1,0 +1,40 @@
+[
+  {
+    "card_number": "16197610",
+    "serial_code": "GLAS-EN013",
+    "name": "Cloudian - Turbulence",
+    "description": "This card cannot be destroyed by battle. If this card is in face-up Defense Position, destroy it. When you Normal Summon this card, place 1 Fog Counter on it for each \\\"Cloudian\\\" monster on the field. You can remove 1 Fog Counter from this card to Special Summon 1 \\\"Cloudian - Smoke Ball\\\" from your Deck or from either player's Graveyard.",
+    "attack": "800",
+    "defence": "0",
+    "type": 1,
+    "subtype": 1,
+    "race": 9,
+    "level": "4",
+    "attribute": 6,
+    "rarity": 1,
+    "archetype": "Cloudian",
+    "edition": "",
+    "set_name": "Gladiator's Assault",
+    "img_code": "16197610",
+    "amount": 1
+  },
+  {
+    "card_number": "16197610",
+    "serial_code": "GLAS-EN013",
+    "name": "Cloudian - Turbulence",
+    "description": "This card cannot be destroyed by battle. If this card is in face-up Defense Position, destroy it. When you Normal Summon this card, place 1 Fog Counter on it for each \\\"Cloudian\\\" monster on the field. You can remove 1 Fog Counter from this card to Special Summon 1 \\\"Cloudian - Smoke Ball\\\" from your Deck or from either player's Graveyard.",
+    "attack": "800",
+    "defence": "0",
+    "type": "Monster",
+    "subtype": "Effect Monster",
+    "race": "Fairy",
+    "level": "4",
+    "attribute": "Water",
+    "rarity": "Common",
+    "archetype": "Cloudian",
+    "edition": "",
+    "set_name": "Gladiator's Assault",
+    "img_code": "16197610",
+    "amount": 1
+  }
+]

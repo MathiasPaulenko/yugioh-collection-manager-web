@@ -1,0 +1,32 @@
+[
+  {
+    "card_number": "20920083",
+    "serial_code": "DLCS-EN116",
+    "name": "Scrum Force",
+    "description": "While you control 2 or more face-up Defense Position monsters, your opponent cannot target Defense Position monsters you control with card effects, and they cannot be destroyed by your opponent's card effects. If this card would be destroyed by card effect, you can destroy 1 card in your Spell & Trap Zone instead.",
+    "race": 4,
+    "archetype": "",
+    "type": 2,
+    "subtype": 17,
+    "rarity": 1,
+    "set_name": "Dragons of Legend: The Complete Series",
+    "edition": "",
+    "img_code": "20920083",
+    "amount": 1
+  },
+  {
+    "card_number": "20920083",
+    "serial_code": "DLCS-EN116",
+    "name": "Scrum Force",
+    "description": "While you control 2 or more face-up Defense Position monsters, your opponent cannot target Defense Position monsters you control with card effects, and they cannot be destroyed by your opponent's card effects. If this card would be destroyed by card effect, you can destroy 1 card in your Spell & Trap Zone instead.",
+    "race": "Continuous",
+    "archetype": "",
+    "type": "Trap",
+    "subtype": "Trap Card",
+    "rarity": "Common",
+    "set_name": "Dragons of Legend: The Complete Series",
+    "edition": "",
+    "img_code": "20920083",
+    "amount": 1
+  }
+]

@@ -1,0 +1,40 @@
+[
+  {
+    "card_number": "44052075",
+    "serial_code": "SR03-ENTKN",
+    "name": "Ancient Gear Token",
+    "description": "This card can be used as an \\\"Ancient Gear Token\\\".\\n\\n\\n*If used for another Token, apply that Token's Type/Attribute/Level/ATK/DEF.",
+    "attack": "0",
+    "defence": "0",
+    "type": 5,
+    "subtype": 28,
+    "race": 13,
+    "level": "1",
+    "attribute": 4,
+    "rarity": 1,
+    "archetype": null,
+    "edition": "",
+    "set_name": "Machine Reactor Structure Deck",
+    "img_code": "44052075",
+    "amount": 1
+  },
+  {
+    "card_number": "44052075",
+    "serial_code": "SR03-ENTKN",
+    "name": "Ancient Gear Token",
+    "description": "This card can be used as an \\\"Ancient Gear Token\\\".\\n\\n\\n*If used for another Token, apply that Token's Type/Attribute/Level/ATK/DEF.",
+    "attack": "0",
+    "defence": "0",
+    "type": "Token",
+    "subtype": "Token",
+    "race": "Machine",
+    "level": "1",
+    "attribute": "Earth",
+    "rarity": "Common",
+    "archetype": null,
+    "edition": "",
+    "set_name": "Machine Reactor Structure Deck",
+    "img_code": "44052075",
+    "amount": 1
+  }
+]

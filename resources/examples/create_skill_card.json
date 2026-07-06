@@ -1,0 +1,30 @@
+[
+  {
+    "card_number": "300202002",
+    "serial_code": "JMPS-ENS01",
+    "name": "Beatdown!",
+    "description": "[If you control a Level 5 or higher monster, you can activate this Skill.]\nAll monsters you currently control gain 300 ATK for each Level 5 or higher monster you control. At the end of your turn, flip this card over.",
+    "type": 4,
+    "subtype": 13,
+    "race": "Kaiba",
+    "rarity": 4,
+    "edition": "",
+    "set_name": "SJ Jump Pack Spring 2020 promotional card",
+    "img_code": "300202002",
+    "amount": 1
+  },
+  {
+    "card_number": "300202002",
+    "serial_code": "JMPS-ENS01",
+    "name": "Beatdown!",
+    "description": "[If you control a Level 5 or higher monster, you can activate this Skill.]\nAll monsters you currently control gain 300 ATK for each Level 5 or higher monster you control. At the end of your turn, flip this card over.",
+    "type": "Skill",
+    "subtype": "Skill Card",
+    "race": "Kaiba",
+    "rarity": "Ultra rare",
+    "edition": "",
+    "set_name": "SJ Jump Pack Spring 2020 promotional card",
+    "img_code": "300202002",
+    "amount": 1
+  }
+]

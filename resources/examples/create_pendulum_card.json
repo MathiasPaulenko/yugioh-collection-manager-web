@@ -1,0 +1,42 @@
+[
+  {
+    "card_number": "84569886",
+    "serial_code": "MP19-EN230",
+    "name": "D/D/D Super Doom King Purple Armageddon",
+    "description": "[ Pendulum Effect ]\\r\\nOnce per turn, before damage calculation, if your \\\"D/D/D\\\" Fusion Monster battles an opponent's monster: You can make that opponent's monster lose 1000 ATK until the end of this turn (even if this card leaves the field).\\r\\n----------------------------------------\\r\\n[ Monster Effect ]\\r\\n2 \\\"D/D/D\\\" monsters\\r\\nYou can target 1 Attack Position monster your opponent controls; destroy it, and if you do, inflict damage to your opponent equal to half its original ATK. You can only use this effect of \\\"D/D/D Super Doom King Purple Armageddon\\\" once per turn. Before damage calculation, if an opponent's monster battles: You can make its ATK become equal to its original ATK until the end of the Damage Step. If this card in the Monster Zone is destroyed: You can place this card in your Pendulum Zone.",
+    "attack": "3500",
+    "defence": "3000",
+    "level": "10",
+    "type": 1,
+    "subtype": 22,
+    "race": 10,
+    "attribute": 1,
+    "scale": 1,
+    "rarity": 3,
+    "archetype": "D/D",
+    "edition": "",
+    "set_name": "2019 Gold Sarcophagus Tin Mega Pack",
+    "img_code": "84569886",
+    "amount": 1
+  },
+  {
+    "card_number": "84569886",
+    "serial_code": "MP19-EN230",
+    "name": "D/D/D Super Doom King Purple Armageddon",
+    "description": "[ Pendulum Effect ]\\r\\nOnce per turn, before damage calculation, if your \\\"D/D/D\\\" Fusion Monster battles an opponent's monster: You can make that opponent's monster lose 1000 ATK until the end of this turn (even if this card leaves the field).\\r\\n----------------------------------------\\r\\n[ Monster Effect ]\\r\\n2 \\\"D/D/D\\\" monsters\\r\\nYou can target 1 Attack Position monster your opponent controls; destroy it, and if you do, inflict damage to your opponent equal to half its original ATK. You can only use this effect of \\\"D/D/D Super Doom King Purple Armageddon\\\" once per turn. Before damage calculation, if an opponent's monster battles: You can make its ATK become equal to its original ATK until the end of the Damage Step. If this card in the Monster Zone is destroyed: You can place this card in your Pendulum Zone.",
+    "attack": "3500",
+    "defence": "3000",
+    "level": "10",
+    "type": "Monster",
+    "subtype": "Pendulum Effect Fusion Monster",
+    "race": "Fiend",
+    "attribute": "Dark",
+    "scale": 1,
+    "rarity": "Super rare",
+    "archetype": "D/D",
+    "edition": "",
+    "set_name": "2019 Gold Sarcophagus Tin Mega Pack",
+    "img_code": "84569886",
+    "amount": 1
+  }
+]

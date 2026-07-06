@@ -1,0 +1,32 @@
+[
+  {
+    "card_number": "63394872",
+    "serial_code": "CDIP-EN048",
+    "name": "Senet Switch",
+    "description": "Once per turn, during your Main Phase, you can move 1 monster on your side of the field to an adjacent (horizontal) unoccupied Monster Card Zone.",
+    "race": 4,
+    "archetype": "",
+    "type": 2,
+    "subtype": 14,
+    "rarity": 1,
+    "set_name": "Cyberdark Impact",
+    "edition": "1º Edition",
+    "img_code": "63394872",
+    "amount": 1
+  },
+  {
+    "card_number": "63394872",
+    "serial_code": "CDIP-EN048",
+    "name": "Senet Switch",
+    "description": "Once per turn, during your Main Phase, you can move 1 monster on your side of the field to an adjacent (horizontal) unoccupied Monster Card Zone.",
+    "race": "Continuous",
+    "archetype": "",
+    "type": "Spell",
+    "subtype": "Spell Card",
+    "rarity": "Common",
+    "set_name": "Cyberdark Impact",
+    "edition": "1º Edition",
+    "img_code": "63394872",
+    "amount": 1
+  }
+]
