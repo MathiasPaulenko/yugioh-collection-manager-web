@@ -82,8 +82,8 @@ class LinkMarker(BaseModel):
 
 class Card(BaseModel):
     serial_code = models.CharField('Serial Code', max_length=60, unique=True, blank=False, null=False)
-    card_number = models.CharField('Card Number', max_length=60, unique=False, blank=False, null=False)
-    name = models.CharField('Name', max_length=255, blank=False, null=False)
+    card_number = models.CharField('Card Number', max_length=60, unique=False, blank=False, null=False, db_index=True)
+    name = models.CharField('Name', max_length=255, blank=False, null=False, db_index=True)
     set_name = models.CharField('Set Name', max_length=255, blank=True, null=True)
     edition = models.CharField("Edition", blank=True, max_length=80, default='')
     amount = models.IntegerField('Amount', default=0)
