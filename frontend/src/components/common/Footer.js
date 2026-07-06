@@ -2,12 +2,14 @@ import React from 'react'
 
 export const Footer = () => {
     return (
-        <>
-            <footer className="mt-5 text-center text-white bg-dark fixed-bottom" >
-                <div className="text-center p-3" style={{background: "rgba(0, 0, 0, 0.2)"}}>
-                    <a className="text-white" href="https://github.com/MathiasPaulenko" target="_blank" rel="noopener noreferrer">My Github</a>
-                </div>
-            </footer>
-        </>
+        <footer className="mt-auto py-4 text-center bg-dark border-top border-secondary">
+            <div className="text-white-50 small">
+                <a className="text-white-50 text-decoration-none" href="https://github.com/MathiasPaulenko" target="_blank" rel="noopener noreferrer">
+                    Mathias Paulenko Echeverz
+                </a>
+                <span className="mx-2">|</span>
+                <span>YuGiOh! Collection Manager</span>
+            </div>
+        </footer>
     )
 }

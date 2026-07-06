@@ -14,12 +14,13 @@ export const InputField = ({
 }) => {
 
     return (
-        <div className={`${size} mt-2 mb-2`}>
-            <div className="form-group">
+        <div className={`${size} mt-1 mb-1`}>
+            <div className="form-group filter-field-group">
+                <label htmlFor={info.toLowerCase()} className="filter-field-label">{info}</label>
                 <input
                     type={type}
                     placeholder={placeholder}
-                    className="form-control"
+                    className="filter-input"
                     name={info.toLowerCase().replace(" ", "_")}
                     id={info.toLowerCase()}
                     autoComplete={autoComplete}
@@ -58,10 +59,10 @@ export const SelectField = ({
     }
 
     return (
-        <div className={`${size} mt-2 mb-2`}>
+        <div className={`${size} mt-1 mb-1`}>
+            <label className="filter-field-label">{name}</label>
             <div className="select-container App">
                 <AsyncSelect
-                    // cacheOptions
                     id={name.toLowerCase()}
                     defaultOptions
                     name={name.toLowerCase().replace(" ", "_")}
@@ -77,7 +78,8 @@ export const SelectField = ({
                     defaultInputValue={defaultValue}
                     defaultValue={defaultValue}
                     menuPortalTarget={document.body}
-
+                    className="filter-select"
+                    classNamePrefix="filter-select"
                 />
             </div>
         </div>
@@ -112,10 +114,10 @@ export const MultiSelectField = ({
     }
 
     return (
-        <div className={`${size} mt-2 mb-2`}>
+        <div className={`${size} mt-1 mb-1`}>
+            <label className="filter-field-label">{name}</label>
             <div className="select-container App">
                 <AsyncSelect
-                    // cacheOptions
                     id={name.toLowerCase()}
                     defaultOptions
                     name={name.toLowerCase().replace(" ", "_")}
@@ -133,7 +135,8 @@ export const MultiSelectField = ({
                     defaultValue={[defaultValue]}
                     isMulti
                     menuPortalTarget={document.body}
-
+                    className="filter-select"
+                    classNamePrefix="filter-select"
                 />
             </div>
         </div>

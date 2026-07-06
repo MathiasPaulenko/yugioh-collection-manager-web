@@ -11,8 +11,7 @@ export const AddCardScreen = () => {
 
     return (
         <>
-
-            <div className='row mt-3 align-items-center mb-3'>
+            <div className='row align-items-center mb-3'>
                 <div className='col-sm-8'>
                     <Title value='Add New Card' />
                 </div>
@@ -20,9 +19,8 @@ export const AddCardScreen = () => {
                     <ReturnButton value="Return" />
                 </div>
             </div>
-            <hr />
 
-            <div className="row mt-2 align-items-center text-center">
+            <div className="row g-2 mt-2 text-center">
                 <TypeCard background_image='normal.jpg' card_image='Effect Monster' type='Normal/Effect Monster Card' page='normal' />
                 <TypeCard background_image='fusion.png' card_image='Fusion Monster' type='Fusion Monster Card' page='fusion' />
                 <TypeCard background_image='sincro.jpg' card_image='Synchro Monster' type='Synchro Monster Card' page='synchro' />
@@ -35,7 +33,6 @@ export const AddCardScreen = () => {
                 <TypeCard background_image='ritual.jpg' card_image='Ritual Monster' type='Ritual Monster Card' page='ritual' />
                 <TypeCard background_image='pendulum.jpg' card_image='Pendulum Monster' type='Pendulum Monster Card' page='pendulum' />
             </div>
-
         </>
     )
 }

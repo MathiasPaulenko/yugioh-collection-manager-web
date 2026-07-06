@@ -10,23 +10,25 @@ export const CardRelatedOnList = ({
 
 
     return (
-        <div className="col-sm-1 mt-2 mb-2 rounded">
+        <div className="col-sm-1 mt-2 mb-2">
             <div className="card card-block border-0 zoom-effect-2 bg-trasparent">
                 <div className='rarity-label'>
                     <img
-                        className=''
                         alt={rarity}
                         src={`/assets/img/rarity_label/${rarity}.webp`}
                     />
                 </div>
                 <a className="shadow-black" href={`/card/${serial_code}`} >
                     <LazyLoadImage
-                        className="card-img-top"
+                        className="card-img-top rounded"
                         alt={`Card ${serial_code}`}
                         src={`${LARGE_IMG_URL + image + IMG_EXT}`}
+                        onError={({ currentTarget }) => {
+                            currentTarget.onerror = null;
+                            currentTarget.src = `${LARGE_IMG_URL}back_high.jpg`;
+                        }}
                     />
                 </a>
-
             </div>
         </div>
     )

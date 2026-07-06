@@ -1,5 +1,6 @@
 import React, { useRef } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { FaSearch, FaTimes } from 'react-icons/fa';
 
 export const SearchCard = ({
     value,
@@ -24,38 +25,30 @@ export const SearchCard = ({
     };
 
     return (
-        <form onSubmit={handleSearch} className="mt-3 animate__animated animate__fadeIn">
-            <div className="row">
-                <div className="col-sm-8">
-                    <input
-                        type="text"
-                        placeholder={placeholder}
-                        className="form-control"
-                        name="searchText"
-                        id="searchText"
-                        autoComplete="off"
-                        value={searchText}
-                        onChange={handle}
-                        ref={inputRef}
-                    />
-                </div>
-                <div className="col-sm-2">
+        <form onSubmit={handleSearch} className="mb-3 animate__animated animate__fadeIn">
+            <div className="coll-search-wrap position-relative">
+                <FaSearch className="coll-search-icon" size={16} />
+                <input
+                    type="text"
+                    placeholder={placeholder}
+                    className="coll-search-input form-control ps-5 pe-5 rounded-pill"
+                    name="searchText"
+                    id="searchText"
+                    autoComplete="off"
+                    value={searchText}
+                    onChange={handle}
+                    ref={inputRef}
+                />
+                {searchText && (
                     <button
-                        className="btn btn-secondary form-control"
-                        type="submit">
-                        Search
-                    </button>
-                </div>
-                <div className="col-sm-2">
-                    <button
-                        className="btn btn-outline-secondary form-control"
-                        type="reset"
+                        type="button"
+                        className="coll-search-clear btn btn-link"
                         onClick={handleReset}
+                        aria-label="Clear"
                     >
-                        Reset
+                        <FaTimes size={14} />
                     </button>
-                </div>
-
+                )}
             </div>
         </form>
     )

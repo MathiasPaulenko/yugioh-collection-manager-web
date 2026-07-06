@@ -48,25 +48,21 @@ export const RelatedCards = ({
                                     } else if (cardData) {
                                         return (
                                             <>
-                                                <div className="row mt-5 mb-3 animate__animated animate__fadeIn" >
-
-                                                    <div className="col-sm-12 m-2">
-                                                        <h5 className='mb-3'>{`${title}:`}</h5>
-                                                        <div className='new-line'></div>
-                                                        <div className='new-line'>
-                                                            <div className="row mt-3 animate__animated animate__fadeIn">
-                                                                {
-                                                                    cardData.map(card => (
-                                                                        <CardRelatedOnList
-                                                                            key={card.serial_code}
-                                                                            name={card.serial_code}
-                                                                            image={card.img_code}
-                                                                            serial_code={card.serial_code}
-                                                                            rarity={card.rarity}
-                                                                        />
-                                                                    ))
-                                                                }
-                                                            </div>
+                                                <div className="card shadow-sm border-0 mt-4 mb-3 animate__animated animate__fadeIn" >
+                                                    <div className="card-body p-3">
+                                                        <h5 className='mb-3 fw-bold'>{`${title}:`}</h5>
+                                                        <div className="row g-2 mt-1">
+                                                            {
+                                                                cardData.map(card => (
+                                                                    <CardRelatedOnList
+                                                                        key={card.serial_code}
+                                                                        name={card.serial_code}
+                                                                        image={card.img_code}
+                                                                        serial_code={card.serial_code}
+                                                                        rarity={card.rarity}
+                                                                    />
+                                                                ))
+                                                            }
                                                         </div>
                                                     </div>
                                                 </div>

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
-import { LARGE_IMG_URL, IMG_EXT, BASE_URL } from '../../../helpers/constants.js';
+import { LARGE_IMG_URL, IMG_EXT, BASE_URL, YGO_PIC } from '../../../helpers/constants.js';
 import { getPriceFromCardSet, getSetCodeFromCardSet } from '../../../helpers/utils.js';
+import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
 
 export const CardSetList = ({
     image,
@@ -11,7 +12,7 @@ export const CardSetList = ({
     color
 }) => {
 
-    const [inCollection, setInCollection] = useState("card-img-top shadow-black zoom-effect-1-1");
+    const [inCollection, setInCollection] = useState(null);
 
     let setCode = "";
     let price = "";
@@ -20,44 +21,54 @@ export const CardSetList = ({
         price = getPriceFromCardSet(card_sets, set_name);
     }
 
-    useEffect(async () => {
-        await fetch(`${BASE_URL}collection/incollection/${setCode}/`)
+    useEffect(() => {
+        let mounted = true;
+        if (!setCode) return;
+        fetch(BASE_URL + 'collection/incollection/' + setCode + '/')
             .then(resp => resp.json())
             .then(data => {
+                if (!mounted) return;
                 if (data.hasOwnProperty('detail')) {
-                    if (color) {
-                        setInCollection("img-gray card-img-top shadow-black zoom-effect-1-1");
-                    }
+                    setInCollection(false);
                 } else {
-                    setInCollection("card-img-top shadow-black zoom-effect-1-1");
+                    setInCollection(true);
                 }
-
-            }).catch((err) => {
-                console.log("");
+            }).catch(() => {
+                if (mounted) setInCollection(false);
             });
+        return () => { mounted = false };
+    }, [setCode]);
 
-    }, [color, inCollection]);
+    const imgSrc = LARGE_IMG_URL + image + IMG_EXT;
+    const showGray = color && inCollection === false;
 
     return (
-        <div className="col-sm-2 mt-2 mb-3 rounded">
-            <div className="card card-block border-0">
-                <a data-name={image} href="/">
+        <div className="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
+            <div className="coll-card zoom-effect-1-1 rounded-3 overflow-visible h-100">
+                <a className="coll-card-link text-decoration-none position-relative" data-name={image} href="/">
                     <LazyLoadImage
-                        key={card_name}
-                        className={inCollection}
-                        alt={`${card_name}`}
-                        src={`${LARGE_IMG_URL + image + IMG_EXT}`}
+                        className={"coll-card-img" + (showGray ? " img-gray" : "")}
+                        alt={card_name}
+                        src={imgSrc}
+                        onError={({ currentTarget }) => {
+                            currentTarget.onerror = null;
+                            currentTarget.src = YGO_PIC + 'back_high.jpg';
+                        }}
                     />
+                    {inCollection !== null && (
+                        <div className="cardset-collection-badge">
+                            {inCollection
+                                ? <FaCheckCircle size={14} className="text-success" />
+                                : <FaTimesCircle size={14} className="text-danger" />
+                            }
+                        </div>
+                    )}
                 </a>
-                <div className="card-block mt-2 mb-2 text-center">
-                    <h6 className="card-title mt-1">{card_name}</h6>
-                    <div className='row'>
-                        <div className='col-sm-7'>
-                            <span >{setCode}</span>
-                        </div>
-                        <div className='col-sm-5'>
-                            <span >{`$ ${price}`}</span>
-                        </div>
+                <div className="coll-card-body p-2 text-center">
+                    <h6 className="coll-card-title text-truncate mb-1" title={card_name}>{card_name}</h6>
+                    <div className="cardset-info-row">
+                        <span className="cardset-set-code">{setCode}</span>
+                        <span className="cardset-set-price">${price}</span>
                     </div>
                 </div>
             </div>

@@ -9,8 +9,8 @@ export const CardDescriptionDetail = ({ description }) => {
 
     return (
         <>
-            <div className="row card-body mt-5 mb-5 animate__animated animate__fadeInRight shadow rounded" >
-                <div className="col-sm-12 m-2">
+            <div className="card shadow-sm border-0 mt-4 mb-4 animate__animated animate__fadeInRight" >
+                <div className="card-body p-4">
                     <h5 className='mb-3'>Description:</h5>
                     <hr />
                     <div className='card-text new-line'>
@@ -25,7 +25,6 @@ export const CardDescriptionDetail = ({ description }) => {
                     </div>
                 </div>
             </div>
-
         </>
     )
 };

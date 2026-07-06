@@ -3,10 +3,20 @@ import { TotalCardSection } from './TotalCardSection';
 
 import "../../../statics/css/main.css"
 
-export const TotalCard = ({ cards, title }) => {
+const sections = [
+    { title: "Types",              cardsKey: "type_amounts" },
+    { title: "Subtypes",           cardsKey: "subtype_amounts" },
+    { title: "Rarity",             cardsKey: "rarity_amounts" },
+    { title: "Attribute Monster",  cardsKey: "attribute_amounts" },
+    { title: "Race Monster",       cardsKey: "monster_race_amounts" },
+    { title: "Race Spell Trap",    cardsKey: "spell_trap_race_amounts" },
+];
+
+const countTotal = (obj) => obj ? Object.values(obj).reduce((a, b) => a + b, 0) : 0;
+
+export const TotalCard = ({ cards }) => {
 
     const {
-        total_cards,
         attribute_amounts,
         monster_race_amounts,
         spell_trap_race_amounts,
@@ -15,29 +25,35 @@ export const TotalCard = ({ cards, title }) => {
         type_amounts
     } = cards;
 
+    const cardsMap = {
+        type_amounts,
+        subtype_amounts,
+        rarity_amounts,
+        attribute_amounts,
+        monster_race_amounts,
+        spell_trap_race_amounts
+    };
+
     return (
-        <>
-            <div className="row card-body mt-3 mb-3 shadow rounded" >
-                <div className="col-sm-12 m-2">
-                    <span className='mb-3 h2'><u>{title}</u></span>
-                    <span className='mb-3' style={{ fontSize: "32px" }}>{` ${total_cards}`}</span>
-                    <hr/>
-                    <TotalCardSection size="col-sm-2" title="Types Cards" cards={type_amounts} />
-                    <hr />
-                    <TotalCardSection size="col-sm-4" title="Subtype Cards" cards={subtype_amounts} />
-                    <hr />
-                    <TotalCardSection size="col-sm-3" title="Rarity Cards" cards={rarity_amounts} />
-                    <hr />
-                    <TotalCardSection size="col-sm-3" title="Attribute Monster Cards" cards={attribute_amounts} />
-                    <hr />
-                    <TotalCardSection size="col-sm-3" title="Race Monster Cards" cards={monster_race_amounts} />
-                    <hr />
-                    <TotalCardSection size="col-sm-3" title="Race Spell Trap Cards" cards={spell_trap_race_amounts} />
-
-
-                </div>
-            </div>
-
-        </>
-    )
+        <div className='mb-4'>
+            {sections.map((section) => {
+                const sectionCards = cardsMap[section.cardsKey];
+                const sectionCount = countTotal(sectionCards);
+                return (
+                    <div key={section.title} className="dash-section mb-4">
+                        <div className="d-flex align-items-center gap-2 mb-3">
+                            <h6 className="dash-section-title text-uppercase text-muted fw-bold mb-0">
+                                {section.title}
+                            </h6>
+                            <span className="badge bg-light text-muted border rounded-pill small">{sectionCount}</span>
+                        </div>
+                        <TotalCardSection
+                            title={`${section.title} Cards`}
+                            cards={sectionCards}
+                        />
+                    </div>
+                );
+            })}
+        </div>
+    );
 };

@@ -38,43 +38,38 @@ export const ConstrolsButtonsCardDetail = ({ serial_code }) => {
 
     return (
         <>
-            <div className="row card-body mt-3 mb-3 animate__animated animate__fadeInUp shadow rounded" >
-                <div className='col-sm-12 m-2'>
+            <div className="card shadow-sm border-0 mt-3 mb-3 animate__animated animate__fadeInUp" >
+                <div className='card-body p-3'>
                     <h5 className='mb-3'>Controls:</h5>
                     <hr />
-                    <div className='row'>
-
-                        <div className='col-sm-1'>
+                    <div className='d-flex flex-wrap gap-2 justify-content-between align-items-center'>
+                        <div className='d-flex gap-2'>
                             <button
                                 type="button"
-                                className="btn btn-secondary m-2"
+                                className="btn btn-outline-secondary"
                                 onClick={handleUpdate}
-
                             >
                                 Update
                             </button>
-                        </div>
-                        <div className='col-sm-1'>
                             <button
                                 type="button"
-                                className="btn btn-danger m-2"
+                                className="btn btn-danger"
                                 onClick={handleShow}
-
                             >
                                 Delete
                             </button>
                         </div>
-                        <div className='col-sm-10 align-right'>
+                        <div className='d-flex gap-2'>
                             <button
                                 type="button"
-                                className="btn btn btn-warning card_button m-2"
+                                className="btn btn-warning"
                                 onClick={handleDecrease}
                             >
                                 Decrease
                             </button>
                             <button
                                 type="button"
-                                className="btn btn-success card_button m-2"
+                                className="btn btn-success"
                                 onClick={handleIncrease}
                             >
                                 Increase
@@ -115,28 +110,22 @@ export const SetAndPriceButtons = ({ set_name, name }) => {
     };
 
     return (
-        <div className='container fixed-bottom'>
-            <div className='row mb-3'>
-                <div className='col-sm-12 align-right'>
+        <div className='d-flex gap-2 justify-content-end mt-3 mb-3'>
+            <button
+                type="button"
+                className="btn btn-outline-secondary"
+                onClick={handleCardSet}
+            >
+                Go to Card Set
+            </button>
 
-                    <button
-                        type="button"
-                        className="btn btn-outline-secondary m-2"
-                        onClick={handleCardSet}
-                    >
-                        Go to Card Set
-                    </button>
-
-                    <button
-                        type="button"
-                        className="btn btn-outline-secondary m-2"
-                        onClick={handlePrice}
-                    >
-                        Got to Prices
-
-                    </button>
-                </div>
-            </div>
+            <button
+                type="button"
+                className="btn btn-outline-secondary"
+                onClick={handlePrice}
+            >
+                Go to Prices
+            </button>
         </div>
     )
 }

@@ -1,39 +1,33 @@
 import React, { useEffect, useState } from 'react'
-import { YGO_API } from '../../helpers/constants';
+import { useLocation } from 'react-router-dom';
 import queryString from 'query-string'
-import { useCard } from '../../hooks/useCard';
+import { YGO_API, YGO_PIC } from '../../helpers/constants';
 import { Loading } from '../common/Loading';
 import { ReturnButton } from '../common/ReturnButton'
 import { Title } from '../common/Title'
-import { CardStapleOnList } from '../common/card/CardStapleOnList';
-import { SearchCard } from '../common/search/SearchCard';
-import { useLocation } from 'react-router-dom';
-import { useForm } from '../../hooks/useForm';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { FaChevronLeft, FaChevronRight, FaAngleDoubleLeft, FaAngleDoubleRight } from 'react-icons/fa';
 
 const PAGE_SIZE = 60;
 
-export const StapleScreen = () => {
+export const ArchetypeCardsScreen = () => {
   const location = useLocation();
+  const { archetype = '' } = queryString.parse(location.search);
 
-  const { q = '' } = queryString.parse(location.search);
-
-  const [formValues, handleInputChange] = useForm({
-    searchText: q,
-  });
-
-  const [url, setUrl] = useState(`${YGO_API}?staple=yes`)
-  const { loading, data } = useCard(url);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
 
   useEffect(() => {
-    if (!formValues.searchText) {
-      setUrl(`${YGO_API}?staple=yes`)
-    } else {
-      setUrl(`${YGO_API}?staple=yes&fname=${formValues.searchText}`)
-    }
-    setPage(1);
-  }, [handleInputChange]);
+    if (!archetype) return;
+    setLoading(true);
+    fetch(YGO_API + '?archetype=' + encodeURIComponent(archetype))
+      .then(res => res.json())
+      .then(json => { setData(json); setLoading(false); })
+      .catch(() => { setData(null); setLoading(false); });
+  }, [archetype]);
+
+  useEffect(() => { setPage(1); }, [archetype]);
 
   const cardData = !!data && data.data;
   const totalCount = cardData ? cardData.length : 0;
@@ -58,19 +52,13 @@ export const StapleScreen = () => {
     <>
       <div className='row align-items-center mb-3'>
         <div className='col-sm-8'>
-          <Title value='Staple Cards' />
+          <Title value={archetype} />
+          <p className="text-muted mb-0 small">All cards in the {archetype} archetype from the YGOProDeck database.</p>
         </div>
         <div className="col-sm-4 text-end">
           <ReturnButton value="Return" />
         </div>
       </div>
-
-      <SearchCard
-        value={formValues}
-        handle={handleInputChange}
-        resetValue='/staples'
-        placeholder="Card Name"
-      />
 
       {loading
         ? <Loading />
@@ -83,7 +71,7 @@ export const StapleScreen = () => {
               if (cardData.length === 0) {
                 return (
                   <div className="coll-empty text-center py-5">
-                    <p className="text-muted mb-0">No staple cards found.</p>
+                    <p className="text-muted mb-0">No cards found for this archetype.</p>
                   </div>
                 )
               }
@@ -93,16 +81,31 @@ export const StapleScreen = () => {
                     <span className="coll-count text-muted small">
                       Showing <strong>{rangeStart}-{rangeEnd}</strong> of <strong>{totalCount}</strong> cards
                     </span>
+                    <a href={'/filters?archetype=' + encodeURIComponent(archetype)} className="btn btn-sm btn-outline-secondary">
+                      View in my collection
+                    </a>
                   </div>
 
                   <div className="row g-2 mt-1 animate__animated animate__fadeIn">
                     {pagedData.map(card => (
-                      <CardStapleOnList
-                        key={card.id}
-                        name={card.id}
-                        image={getCardImage(card)}
-                        card_name={card.name}
-                      />
+                      <div key={card.id} className="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
+                        <div className="coll-card zoom-effect-1-1 rounded-3 overflow-visible h-100">
+                          <a className="coll-card-link text-decoration-none position-relative" data-name={card.id} href="/">
+                            <LazyLoadImage
+                              className="coll-card-img"
+                              alt={card.name}
+                              src={getCardImage(card)}
+                              onError={({ currentTarget }) => {
+                                currentTarget.onerror = null;
+                                currentTarget.src = YGO_PIC + 'back_high.jpg';
+                              }}
+                            />
+                          </a>
+                          <div className="coll-card-body p-2 text-center">
+                            <h6 className="coll-card-title text-truncate mb-0">{card.name}</h6>
+                          </div>
+                        </div>
+                      </div>
                     ))}
                   </div>
 
@@ -110,13 +113,13 @@ export const StapleScreen = () => {
                     <div className="coll-sticky-pagination">
                       <nav className="d-flex justify-content-center">
                         <ul className="pagination pagination-sm mb-0">
-                          <li className={`page-item ${page <= 1 ? 'disabled' : ''}`}>
-                            <button className="page-link" onClick={() => handleChangePage(1)} aria-label="First">
+                          <li className={'page-item ' + (page <= 1 ? 'disabled' : '')}>
+                            <button className="page-link" onClick={() => handleChangePage(1)}>
                               <FaAngleDoubleLeft size={12} />
                             </button>
                           </li>
-                          <li className={`page-item ${page <= 1 ? 'disabled' : ''}`}>
-                            <button className="page-link" onClick={() => handleChangePage(page - 1)} aria-label="Previous">
+                          <li className={'page-item ' + (page <= 1 ? 'disabled' : '')}>
+                            <button className="page-link" onClick={() => handleChangePage(page - 1)}>
                               <FaChevronLeft size={12} />
                             </button>
                           </li>
@@ -127,18 +130,18 @@ export const StapleScreen = () => {
                             else if (page >= count - 2) { p = count - 4 + i; }
                             else { p = page - 2 + i; }
                             return (
-                              <li key={p} className={`page-item ${p === page ? 'active' : ''}`}>
+                              <li key={p} className={'page-item ' + (p === page ? 'active' : '')}>
                                 <button className="page-link" onClick={() => handleChangePage(p)}>{p}</button>
                               </li>
                             );
                           })}
-                          <li className={`page-item ${page >= count ? 'disabled' : ''}`}>
-                            <button className="page-link" onClick={() => handleChangePage(page + 1)} aria-label="Next">
+                          <li className={'page-item ' + (page >= count ? 'disabled' : '')}>
+                            <button className="page-link" onClick={() => handleChangePage(page + 1)}>
                               <FaChevronRight size={12} />
                             </button>
                           </li>
-                          <li className={`page-item ${page >= count ? 'disabled' : ''}`}>
-                            <button className="page-link" onClick={() => handleChangePage(count)} aria-label="Last">
+                          <li className={'page-item ' + (page >= count ? 'disabled' : '')}>
+                            <button className="page-link" onClick={() => handleChangePage(count)}>
                               <FaAngleDoubleRight size={12} />
                             </button>
                           </li>

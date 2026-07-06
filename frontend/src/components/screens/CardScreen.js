@@ -16,29 +16,22 @@ export const CardScreen = () => {
 
     return (
         <>
-            {
-                loading
-                    ?
-                    (
-                        <Loading />
-                    )
-                    :
-                    (
-                        <>
-                            <div className='row mt-3 align-items-center'>
-                                <div className="col-sm-8">
-                                    <Title value={card_data.name} />
-
-                                </div>
-                                <div className="col-sm-4">
-                                    <ReturnButton value="Return" />
-                                </div>
+            {loading
+                ? <Loading />
+                : (
+                    <>
+                        <div className='row align-items-center mb-3'>
+                            <div className="col-sm-8">
+                                <Title value={card_data.name} />
                             </div>
+                            <div className="col-sm-4">
+                                <ReturnButton value="Return" />
+                            </div>
+                        </div>
 
-                            <CardDetail card={card_data} />
-                            
-                        </>
-                    )
+                        <CardDetail card={card_data} />
+                    </>
+                )
             }
         </>
     )

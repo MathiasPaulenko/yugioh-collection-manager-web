@@ -90,9 +90,7 @@ export const SynchroAddCardScreen = () => {
 
     return (
         <>
-
-
-            <div className='row mt-3 align-items-center mb-3'>
+            <div className='row align-items-center mb-3'>
                 <div className='col-sm-8'>
                     <Title value='Add New Synchro Monster Card' />
                 </div>
@@ -101,59 +99,47 @@ export const SynchroAddCardScreen = () => {
                 </div>
             </div>
 
+            {(messageResponse.detail) && <div className="alert alert-danger text-capitalize">{messageResponse.detail}</div>}
 
-            {
-                (messageResponse.detail) && <div className="alert alert-danger text-capitalize">{messageResponse.detail}</div>
-            }
+            <div className="card bg-light border-0 mb-3">
+                <div className="card-body p-3">
+                    <form onSubmit={handleAddCard}>
+                        <div className="row g-2">
+                            <InputField req={true} type="text" info="Serial Code" />
+                            <InputField req={true} type="text" info="Card Number" />
+                            <InputField req={true} type="text" info="Name" />
+                            <InputField req={true} type="text" info="Description" />
+                            <InputField req={true} type="number" info="Attack" autoComplete="on" />
+                            <InputField req={true} type="number" info="Defence" autoComplete="on" />
+                            <InputField req={true} type="number" info="Level" autoComplete="on" />
+                            <SelectField path="info/race/" name="Race" />
+                            <SelectField path="info/subtype/" name="Subtype" />
+                            <SelectField path="info/attribute/" name="Attribute" />
+                            <InputField type="text" info="Archetype" />
+                            <InputField req={true} type="text" info="Img Code" />
+                            <SelectField path="info/rarity/" name="Rarity" />
+                            <InputField type="text" info="Edition" />
+                            <InputField type="text" info="Set Name" />
+                            <InputField req={true} type="number" info="Amount" autoComplete="on" />
+                            <InputField type="text" info="Format" />
+                            <InputField type="text" info="Note" />
+                            <InputField type="text" info="Banned" />
+                            <InputField type="text" info="Language" />
 
-
-            <form className="animate__animated animate__fadeIn" onSubmit={handleAddCard}>
-                <div className="row ">
-                    <InputField req={true} type="text" info="Serial Code" />
-                    <InputField req={true} type="text" info="Card Number" />
-                    <InputField req={true} type="text" info="Name" />
-                    <InputField req={true} type="text" info="Description" />
-                    <InputField req={true} type="number" info="Attack" autoComplete="on" />
-                    <InputField req={true} type="number" info="Defence" autoComplete="on" />
-                    <InputField req={true} type="number" info="Level" autoComplete="on" />
-                    <SelectField path="info/race/" name="Race" />
-                    <SelectField path="info/subtype/" name="Subtype" />
-                    <SelectField path="info/attribute/" name="Attribute" />
-                    <InputField type="text" info="Archetype" />
-                    <InputField req={true} type="text" info="Img Code" />
-                    <SelectField path="info/rarity/" name="Rarity" />
-                    <InputField type="text" info="Edition" />
-                    <InputField type="text" info="Set Name" />
-                    <InputField req={true} type="number" info="Amount" autoComplete="on" />
-                    <InputField type="text" info="Format" />
-                    <InputField type="text" info="Note" />
-                    <InputField type="text" info="Banned" />
-                    <InputField type="text" info="Language" />
-
-                    <div className="col-sm-3 mt-2 mb-2">
-                        <button
-                            className="btn form-control"
-                            style={{
-                                background: "rgb(112 103 86)",
-                                color: 'white'
-                            }}
-                            type="submit"
-                            id="submit"
-                        >
-                            Add
-                        </button>
-                    </div>
-                    <div className="col-sm-3 mt-2 mb-2">
-                        <button
-                            className="btn btn-outline-secondary form-control"
-                            type="reset"
-                            onClick={handleReset}
-                        >
-                            Reset
-                        </button>
-                    </div>
+                            <div className="col-sm-3 mt-2 mb-2">
+                                <button className="btn btn-dark w-100" type="submit" id="submit">
+                                    Add
+                                </button>
+                            </div>
+                            <div className="col-sm-3 mt-2 mb-2">
+                                <button className="btn btn-outline-secondary w-100" type="reset" onClick={handleReset}>
+                                    Reset
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>

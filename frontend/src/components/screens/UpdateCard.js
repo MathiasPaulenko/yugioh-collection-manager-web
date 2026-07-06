@@ -29,7 +29,6 @@ export const UpdateCard = () => {
     const type = cardData.type;
     const subtype = cardData.subtype;
     const size = "col-sm-4"
-    let btnColor = "rgb(46, 49, 52)";
 
     if (cardData && (Object.keys(bodyRequest).length === 0)) {
         setBodyRequest(cardData);
@@ -153,7 +152,7 @@ export const UpdateCard = () => {
                     :
                     (
                         <>
-                            <div className='row mt-3 align-items-center mb-3'>
+                            <div className='row align-items-center mb-3'>
                                 <div className='col-sm-8'>
                                     <Title value={`Update Card: ${cardData.name}`} />
                                 </div>
@@ -162,15 +161,21 @@ export const UpdateCard = () => {
                                 </div>
                             </div>
 
-                            <div className="row m-6 mt-3 animate__animated animate__fadeInLeft" >
-                                <div className="col-sm-2 mt-2 zoom-effect-1-1">
-                                    <div className="card card-block border-0">
-                                        <a className="shadow-black zoom-effect-1-1" href={`/card/${serial_code}`} >
-                                            <img className="card-img-top" src={`${LARGE_IMG_URL + cardData.img_code + IMG_EXT}`} alt={`Card ${serial_code}`}></img>
+                            <div className="row g-3 mb-3">
+                                <div className="col-sm-2">
+                                    <div className="card border-0 shadow-sm rounded-3">
+                                        <a className="shadow-black" href={`/card/${serial_code}`} >
+                                            <img
+                                                className="card-img-top rounded-3"
+                                                src={`${LARGE_IMG_URL + cardData.img_code + IMG_EXT}`}
+                                                alt={`Card ${serial_code}`}
+                                                onError={({ currentTarget }) => {
+                                                    currentTarget.onerror = null;
+                                                    currentTarget.src = `${LARGE_IMG_URL}back_high.jpg`;
+                                                }}
+                                            />
                                         </a>
-
                                     </div>
-
                                 </div>
                                 {
                                     (messageResponse.detail) && <div className="alert alert-danger text-capitalize">{messageResponse.detail}</div>
@@ -182,265 +187,204 @@ export const UpdateCard = () => {
 
                                             if (type.toLowerCase() === 'skill') {
                                                 return (
-                                                    <form className="animate__animated animate__fadeIn" onSubmit={handleAddCard}>
-                                                        <div className="row ">
-                                                            <InputField size={size} req={true} type="text" info="Serial Code" value={serial_code} />
-                                                            <InputField size={size} req={true} type="text" info="Card Number" value={data.card_number} />
-                                                            <InputField size={size} req={true} type="text" info="Name" value={data.name} />
-                                                            <InputField size={size} req={true} type="text" info="Description" value={data.description} />
-                                                            <InputField size={size} req={true} type="text" info="Race" value={data.race} />
-                                                            <InputField size={size} req={true} type="text" info="Img Code" value={data.img_code} />
-                                                            <SelectField size={size} path="info/rarity/" name="Rarity" defaultValue={data.rarity} />
-                                                            <InputField size={size} type="text" info="Edition" value={data.edition} />
-                                                            <InputField size={size} type="text" info="Set Name" value={data.set_name} />
-                                                            <InputField size={size} req={true} type="number" info="Amount" autoComplete="on" value={data.amount} />
-                                                            <InputField size={size} type="text" info="Format" value={data.format} />
-                                                            <InputField size={size} type="text" info="Note" value={data.note} />
-                                                            <InputField size={size} type="text" info="Banned" value={data.banned} />
+                                                    <div className="card bg-light border-0">
+                                                        <div className="card-body p-3">
+                                                            <form onSubmit={handleAddCard}>
+                                                                <div className="row g-2">
+                                                                    <InputField size={size} req={true} type="text" info="Serial Code" value={serial_code} />
+                                                                    <InputField size={size} req={true} type="text" info="Card Number" value={data.card_number} />
+                                                                    <InputField size={size} req={true} type="text" info="Name" value={data.name} />
+                                                                    <InputField size={size} req={true} type="text" info="Description" value={data.description} />
+                                                                    <InputField size={size} req={true} type="text" info="Race" value={data.race} />
+                                                                    <InputField size={size} req={true} type="text" info="Img Code" value={data.img_code} />
+                                                                    <SelectField size={size} path="info/rarity/" name="Rarity" defaultValue={data.rarity} />
+                                                                    <InputField size={size} type="text" info="Edition" value={data.edition} />
+                                                                    <InputField size={size} type="text" info="Set Name" value={data.set_name} />
+                                                                    <InputField size={size} req={true} type="number" info="Amount" autoComplete="on" value={data.amount} />
+                                                                    <InputField size={size} type="text" info="Format" value={data.format} />
+                                                                    <InputField size={size} type="text" info="Note" value={data.note} />
+                                                                    <InputField size={size} type="text" info="Banned" value={data.banned} />
 
-                                                            <div className="col-sm-4 mt-2 mb-2">
-                                                                <button
-                                                                    className="btn form-control"
-                                                                    style={{
-                                                                        background: "#072847",
-                                                                        color: 'white'
-                                                                    }}
-                                                                    type="submit"
-                                                                    id="submit"
-                                                                >
-                                                                    Update
-                                                                </button>
-                                                            </div>
-                                                            <div className="col-sm-4 mt-2 mb-2">
-                                                                <button
-                                                                    className="btn btn-outline-secondary form-control"
-                                                                    type="reset"
-                                                                    onClick={handleReset}
-                                                                >
-                                                                    Reset
-                                                                </button>
-                                                            </div>
+                                                                    <div className="col-sm-4 mt-2 mb-2">
+                                                                        <button className="btn btn-dark w-100" type="submit" id="submit">
+                                                                            Update
+                                                                        </button>
+                                                                    </div>
+                                                                    <div className="col-sm-4 mt-2 mb-2">
+                                                                        <button className="btn btn-outline-secondary w-100" type="reset" onClick={handleReset}>
+                                                                            Reset
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
                                                         </div>
-                                                    </form>
+                                                    </div>
                                                 )
 
                                             } else if (type.toLowerCase() === 'spell' || type.toLowerCase() === 'trap') {
                                                 return (
-                                                    <form className="animate__animated animate__fadeIn" onSubmit={handleAddCard}>
-                                                        <div className="row ">
-                                                            <InputField size={size} req={true} type="text" info="Serial Code" value={serial_code} />
-                                                            <InputField size={size} req={true} type="text" info="Card Number" value={data.card_number} />
-                                                            <InputField size={size} req={true} type="text" info="Name" value={data.name} />
-                                                            <InputField size={size} req={true} type="text" info="Description" value={data.description} />
-                                                            <SelectField size={size} path="info/magic_trap_race/" name="Race" defaultValue={data.race} />
-                                                            <InputField size={size} type="text" info="Archetype" value={data.archetype} />
-                                                            <InputField size={size} req={true} type="text" info="Img Code" value={data.img_code} />
-                                                            <SelectField size={size} path="info/rarity/" name="Rarity" defaultValue={data.rarity} />
-                                                            <InputField size={size} type="text" info="Edition" value={data.edition} />
-                                                            <InputField size={size} type="text" info="Set Name" value={data.set_name} />
-                                                            <InputField size={size} req={true} type="number" info="Amount" autoComplete="on" value={data.amount} />
-                                                            <InputField size={size} type="text" info="Format" value={data.format} />
-                                                            <InputField size={size} type="text" info="Note" value={data.note} />
-                                                            <InputField size={size} type="text" info="Banned" value={data.banned} />
-                                                            
-                                                            <div className="col-sm-4 mt-2 mb-2"></div>
+                                                    <div className="card bg-light border-0">
+                                                        <div className="card-body p-3">
+                                                            <form onSubmit={handleAddCard}>
+                                                                <div className="row g-2">
+                                                                    <InputField size={size} req={true} type="text" info="Serial Code" value={serial_code} />
+                                                                    <InputField size={size} req={true} type="text" info="Card Number" value={data.card_number} />
+                                                                    <InputField size={size} req={true} type="text" info="Name" value={data.name} />
+                                                                    <InputField size={size} req={true} type="text" info="Description" value={data.description} />
+                                                                    <SelectField size={size} path="info/magic_trap_race/" name="Race" defaultValue={data.race} />
+                                                                    <InputField size={size} type="text" info="Archetype" value={data.archetype} />
+                                                                    <InputField size={size} req={true} type="text" info="Img Code" value={data.img_code} />
+                                                                    <SelectField size={size} path="info/rarity/" name="Rarity" defaultValue={data.rarity} />
+                                                                    <InputField size={size} type="text" info="Edition" value={data.edition} />
+                                                                    <InputField size={size} type="text" info="Set Name" value={data.set_name} />
+                                                                    <InputField size={size} req={true} type="number" info="Amount" autoComplete="on" value={data.amount} />
+                                                                    <InputField size={size} type="text" info="Format" value={data.format} />
+                                                                    <InputField size={size} type="text" info="Note" value={data.note} />
+                                                                    <InputField size={size} type="text" info="Banned" value={data.banned} />
 
-                                                            <div className="col-sm-4 mt-2 mb-2">
-                                                                <button
-                                                                    className="btn form-control"
-                                                                    style={{
-                                                                        background: "linear-gradient(to right, rgb(171, 31, 120), rgb(116 14 79), rgb(7 54 46), rgb(4, 142, 119))",
-                                                                        color: 'white'
-                                                                    }}
-                                                                    type="submit"
-                                                                    id="submit"
-                                                                >
-                                                                    Update
-                                                                </button>
-                                                            </div>
-                                                            <div className="col-sm-4 mt-2 mb-2">
-                                                                <button
-                                                                    className="btn btn-outline-secondary form-control"
-                                                                    type="reset"
-                                                                    onClick={handleReset}
-                                                                >
-                                                                    Reset
-                                                                </button>
-                                                            </div>
+                                                                    <div className="col-sm-4 mt-2 mb-2"></div>
+                                                                    <div className="col-sm-4 mt-2 mb-2">
+                                                                        <button className="btn btn-dark w-100" type="submit" id="submit">
+                                                                            Update
+                                                                        </button>
+                                                                    </div>
+                                                                    <div className="col-sm-4 mt-2 mb-2">
+                                                                        <button className="btn btn-outline-secondary w-100" type="reset" onClick={handleReset}>
+                                                                            Reset
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>
                                                         </div>
-                                                    </form>
+                                                    </div>
                                                 )
 
                                             } else {
                                                 if (subtype.toLowerCase().includes("pendulum")) {
                                                     return (
-                                                        <form className="animate__animated animate__fadeIn" onSubmit={handleAddCard}>
-                                                            <div className="row ">
-                                                                <InputField size={size} req={true} type="text" info="Serial Code" value={serial_code} />
-                                                                <InputField size={size} req={true} type="text" info="Card Number" value={data.card_number} />
-                                                                <InputField size={size} req={true} type="text" info="Name" value={data.name} />
-                                                                <InputField size={size} req={true} type="text" info="Description" value={data.description} />
-                                                                <InputField size={size} req={true} type="number" info="Attack" autoComplete="on" value={data.attack} />
-                                                                <InputField size={size} req={true} type="number" info="Defence" autoComplete="on" value={data.defence} />
-                                                                <InputField size={size} req={true} type="number" info="Level" autoComplete="on" value={data.level} />
-                                                                <InputField size={size} req={true} type="number" info="Scale" autoComplete="on" value={data.scale} />
-                                                                <SelectField size={size} path="info/race/" name="Race" defaultValue={data.race} />
-                                                                <SelectField size={size} path="info/subtype/" name="Subtype" defaultValue={data.subtype} />
-                                                                <SelectField size={size} path="info/attribute/" name="Attribute" defaultValue={data.attribute} />
-                                                                <InputField size={size} type="text" info="Archetype" value={data.archetype} />
-                                                                <InputField size={size} req={true} type="text" info="Img Code" value={data.img_code} />
-                                                                <SelectField size={size} path="info/rarity/" name="Rarity" defaultValue={data.rarity} />
-                                                                <InputField size={size} type="text" info="Edition" value={data.edition} />
-                                                                <InputField size={size} type="text" info="Set Name" value={data.set_name} />
-                                                                <InputField size={size} req={true} type="number" info="Amount" autoComplete="on" value={data.amount} />
-                                                                <InputField size={size} type="text" info="Format" value={data.format} />
-                                                                <InputField size={size} type="text" info="Note" value={data.note} />
-                                                                <InputField size={size} type="text" info="Banned" value={data.banned} />
-                                                                
-                                                                <div className="col-sm-4 mt-2 mb-2"></div>
+                                                        <div className="card bg-light border-0">
+                                                            <div className="card-body p-3">
+                                                                <form onSubmit={handleAddCard}>
+                                                                    <div className="row g-2">
+                                                                        <InputField size={size} req={true} type="text" info="Serial Code" value={serial_code} />
+                                                                        <InputField size={size} req={true} type="text" info="Card Number" value={data.card_number} />
+                                                                        <InputField size={size} req={true} type="text" info="Name" value={data.name} />
+                                                                        <InputField size={size} req={true} type="text" info="Description" value={data.description} />
+                                                                        <InputField size={size} req={true} type="number" info="Attack" autoComplete="on" value={data.attack} />
+                                                                        <InputField size={size} req={true} type="number" info="Defence" autoComplete="on" value={data.defence} />
+                                                                        <InputField size={size} req={true} type="number" info="Level" autoComplete="on" value={data.level} />
+                                                                        <InputField size={size} req={true} type="number" info="Scale" autoComplete="on" value={data.scale} />
+                                                                        <SelectField size={size} path="info/race/" name="Race" defaultValue={data.race} />
+                                                                        <SelectField size={size} path="info/subtype/" name="Subtype" defaultValue={data.subtype} />
+                                                                        <SelectField size={size} path="info/attribute/" name="Attribute" defaultValue={data.attribute} />
+                                                                        <InputField size={size} type="text" info="Archetype" value={data.archetype} />
+                                                                        <InputField size={size} req={true} type="text" info="Img Code" value={data.img_code} />
+                                                                        <SelectField size={size} path="info/rarity/" name="Rarity" defaultValue={data.rarity} />
+                                                                        <InputField size={size} type="text" info="Edition" value={data.edition} />
+                                                                        <InputField size={size} type="text" info="Set Name" value={data.set_name} />
+                                                                        <InputField size={size} req={true} type="number" info="Amount" autoComplete="on" value={data.amount} />
+                                                                        <InputField size={size} type="text" info="Format" value={data.format} />
+                                                                        <InputField size={size} type="text" info="Note" value={data.note} />
+                                                                        <InputField size={size} type="text" info="Banned" value={data.banned} />
 
-                                                                <div className="col-sm-4 mt-2 mb-2">
-                                                                    <button
-                                                                        className="btn form-control"
-                                                                        style={{
-                                                                            background: "linear-gradient(to right, rgb(120, 97, 55), rgb(86 58 8), rgb(7 54 46), rgb(4, 142, 119))",
-                                                                            color: 'white'
-                                                                        }}
-                                                                        type="submit"
-                                                                        id="submit"
-                                                                    >
-                                                                        Update
-                                                                    </button>
-                                                                </div>
-                                                                <div className="col-sm-4 mt-2 mb-2">
-                                                                    <button
-                                                                        className="btn btn-outline-secondary form-control"
-                                                                        type="reset"
-                                                                        onClick={handleReset}
-                                                                    >
-                                                                        Reset
-                                                                    </button>
-                                                                </div>
+                                                                        <div className="col-sm-4 mt-2 mb-2"></div>
+                                                                        <div className="col-sm-4 mt-2 mb-2">
+                                                                            <button className="btn btn-dark w-100" type="submit" id="submit">
+                                                                                Update
+                                                                            </button>
+                                                                        </div>
+                                                                        <div className="col-sm-4 mt-2 mb-2">
+                                                                            <button className="btn btn-outline-secondary w-100" type="reset" onClick={handleReset}>
+                                                                                Reset
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
                                                             </div>
-                                                        </form>
+                                                        </div>
                                                     )
                                                 } else if (subtype.toLowerCase().includes("link")) {
                                                     return (
-                                                        <form className="animate__animated animate__fadeIn" onSubmit={handleAddCard}>
-                                                            <div className="row ">
-                                                                <InputField size={size} req={false} type="text" info="Serial Code" value={serial_code} />
-                                                                <InputField size={size} req={false} type="text" info="Card Number" value={data.card_number} />
-                                                                <InputField size={size} req={false} type="text" info="Name" value={data.name} />
-                                                                <InputField size={size} req={false} type="text" info="Description" value={data.description} />
-                                                                <InputField size={size} req={false} type="number" info="Attack" autoComplete="on" value={data.attack} />
-                                                                <SelectField size={size} path="info/race/" name="Race" defaultValue={data.race} />
-                                                                <SelectField size={size} path="info/attribute/" name="Attribute" defaultValue={data.attribute} />
-                                                                <InputField size={size} req={false} type="number" info="Link Value" autoComplete="on" value={data.link_value} />
-                                                                <MultiSelectField size={size} path="info/link_markers/" name="Link Markers" defaultValue={data.link_markers} />
-                                                                <InputField size={size} type="text" info="Archetype" value={data.archetype} />
-                                                                <SelectField size={size} path="info/rarity/" name="Rarity" defaultValue={data.rarity} />
-                                                                <InputField size={size} req={false} type="text" info="Img Code" value={data.img_code} />
-                                                                <InputField size={size} type="text" info="Edition" value={data.edition} />
-                                                                <InputField size={size} type="text" info="Set Name" value={data.set_name} />
-                                                                <InputField size={size} req={false} type="number" info="Amount" autoComplete="on" value={data.amount} />
-                                                                <InputField size={size} type="text" info="Format" value={data.format} />
-                                                                <InputField size={size} type="text" info="Note" value={data.note} />
-                                                                <InputField size={size} type="text" info="Banned" value={data.banned} />
+                                                        <div className="card bg-light border-0">
+                                                            <div className="card-body p-3">
+                                                                <form onSubmit={handleAddCard}>
+                                                                    <div className="row g-2">
+                                                                        <InputField size={size} req={false} type="text" info="Serial Code" value={serial_code} />
+                                                                        <InputField size={size} req={false} type="text" info="Card Number" value={data.card_number} />
+                                                                        <InputField size={size} req={false} type="text" info="Name" value={data.name} />
+                                                                        <InputField size={size} req={false} type="text" info="Description" value={data.description} />
+                                                                        <InputField size={size} req={false} type="number" info="Attack" autoComplete="on" value={data.attack} />
+                                                                        <SelectField size={size} path="info/race/" name="Race" defaultValue={data.race} />
+                                                                        <SelectField size={size} path="info/attribute/" name="Attribute" defaultValue={data.attribute} />
+                                                                        <InputField size={size} req={false} type="number" info="Link Value" autoComplete="on" value={data.link_value} />
+                                                                        <MultiSelectField size={size} path="info/link_markers/" name="Link Markers" defaultValue={data.link_markers} />
+                                                                        <InputField size={size} type="text" info="Archetype" value={data.archetype} />
+                                                                        <SelectField size={size} path="info/rarity/" name="Rarity" defaultValue={data.rarity} />
+                                                                        <InputField size={size} req={false} type="text" info="Img Code" value={data.img_code} />
+                                                                        <InputField size={size} type="text" info="Edition" value={data.edition} />
+                                                                        <InputField size={size} type="text" info="Set Name" value={data.set_name} />
+                                                                        <InputField size={size} req={false} type="number" info="Amount" autoComplete="on" value={data.amount} />
+                                                                        <InputField size={size} type="text" info="Format" value={data.format} />
+                                                                        <InputField size={size} type="text" info="Note" value={data.note} />
+                                                                        <InputField size={size} type="text" info="Banned" value={data.banned} />
 
-                                                                <div className="col-sm-4 mt-2 mb-2"></div>
-
-                                                                <div className="col-sm-4 mt-2 mb-2">
-                                                                    <button
-                                                                        className="btn form-control"
-                                                                        style={{
-                                                                            background: "#0e335b",
-                                                                            color: 'white'
-                                                                        }}
-                                                                        type="submit"
-                                                                        id="submit"
-                                                                    >
-                                                                        Add
-                                                                    </button>
-                                                                </div>
-                                                                <div className="col-sm-4 mt-2 mb-2">
-                                                                    <button
-                                                                        className="btn btn-outline-secondary form-control"
-                                                                        type="reset"
-                                                                        onClick={handleReset}
-                                                                    >
-                                                                        Reset
-                                                                    </button>
-                                                                </div>
+                                                                        <div className="col-sm-4 mt-2 mb-2"></div>
+                                                                        <div className="col-sm-4 mt-2 mb-2">
+                                                                            <button className="btn btn-dark w-100" type="submit" id="submit">
+                                                                                Update
+                                                                            </button>
+                                                                        </div>
+                                                                        <div className="col-sm-4 mt-2 mb-2">
+                                                                            <button className="btn btn-outline-secondary w-100" type="reset" onClick={handleReset}>
+                                                                                Reset
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
                                                             </div>
-                                                        </form>
+                                                        </div>
                                                     )
                                                 } else {
 
-                                                    if (data.subtype.includes("Fusion")) {
-                                                        btnColor = "rgb(126, 40, 141)"
-                                                    } else if (data.subtype.includes("Synchro")) {
-                                                        btnColor = "rgb(112, 103, 86)"
-                                                    } else if (data.subtype.includes("XYZ")) {
-                                                        btnColor = "rgb(46, 49, 52)"
-                                                    } else if (data.subtype.includes("Token")) {
-                                                        btnColor = "rgb(64, 62, 66)"
-                                                    } else if (data.subtype.includes("Ritual")) {
-                                                        btnColor = "rgb(77, 118, 186)"
-                                                    } else if (data.subtype.includes("Normal")) {
-                                                        btnColor = "rgb(192 145 68)"
-                                                    } else if (data.subtype.includes("Effect")) {
-                                                        btnColor = "rgb(193 116 70)"
-                                                    } else {
-                                                        btnColor = "rgb(46, 49, 52)"
-                                                    }
-
                                                     return (
-                                                        <form className="" onSubmit={handleAddCard}>
-                                                            <div className="row ">
-                                                                <InputField size={size} req={true} type="text" info="Serial Code" value={serial_code} />
-                                                                <InputField size={size} req={true} type="text" info="Card Number" value={data.card_number} />
-                                                                <InputField size={size} req={true} type="text" info="Name" value={data.name} />
-                                                                <InputField size={size} req={true} type="text" info="Description" value={data.description} />
-                                                                <InputField size={size} req={true} type="number" info="Attack" autoComplete="on" value={data.attack} />
-                                                                <InputField size={size} req={true} type="number" info="Defence" autoComplete="on" value={data.defence} />
-                                                                <InputField size={size} req={true} type="number" info="Level" autoComplete="on" value={data.level} />
-                                                                <SelectField size={size} path="info/race/" name="Race" defaultValue={data.race} />
-                                                                <SelectField size={size} path="info/subtype/" name="Subtype" defaultValue={data.subtype} />
-                                                                <SelectField size={size} path="info/attribute/" name="Attribute" defaultValue={data.attribute} />
-                                                                <InputField size={size} type="text" info="Archetype" value={data.archetype} />
-                                                                <InputField size={size} req={true} type="text" info="Img Code" value={data.img_code} />
-                                                                <SelectField size={size} path="info/rarity/" name="Rarity" defaultValue={data.rarity} />
-                                                                <InputField size={size} type="text" info="Edition" value={data.edition} />
-                                                                <InputField size={size} type="text" info="Set Name" value={data.set_name} />
-                                                                <InputField size={size} req={true} type="number" info="Amount" autoComplete="on" value={data.amount} />
-                                                                <InputField size={size} type="text" info="Format" value={data.format} />
-                                                                <InputField size={size} type="text" info="Note" value={data.note} />
-                                                                <InputField size={size} type="text" info="Banned" value={data.banned} />
+                                                        <div className="card bg-light border-0">
+                                                            <div className="card-body p-3">
+                                                                <form onSubmit={handleAddCard}>
+                                                                    <div className="row g-2">
+                                                                        <InputField size={size} req={true} type="text" info="Serial Code" value={serial_code} />
+                                                                        <InputField size={size} req={true} type="text" info="Card Number" value={data.card_number} />
+                                                                        <InputField size={size} req={true} type="text" info="Name" value={data.name} />
+                                                                        <InputField size={size} req={true} type="text" info="Description" value={data.description} />
+                                                                        <InputField size={size} req={true} type="number" info="Attack" autoComplete="on" value={data.attack} />
+                                                                        <InputField size={size} req={true} type="number" info="Defence" autoComplete="on" value={data.defence} />
+                                                                        <InputField size={size} req={true} type="number" info="Level" autoComplete="on" value={data.level} />
+                                                                        <SelectField size={size} path="info/race/" name="Race" defaultValue={data.race} />
+                                                                        <SelectField size={size} path="info/subtype/" name="Subtype" defaultValue={data.subtype} />
+                                                                        <SelectField size={size} path="info/attribute/" name="Attribute" defaultValue={data.attribute} />
+                                                                        <InputField size={size} type="text" info="Archetype" value={data.archetype} />
+                                                                        <InputField size={size} req={true} type="text" info="Img Code" value={data.img_code} />
+                                                                        <SelectField size={size} path="info/rarity/" name="Rarity" defaultValue={data.rarity} />
+                                                                        <InputField size={size} type="text" info="Edition" value={data.edition} />
+                                                                        <InputField size={size} type="text" info="Set Name" value={data.set_name} />
+                                                                        <InputField size={size} req={true} type="number" info="Amount" autoComplete="on" value={data.amount} />
+                                                                        <InputField size={size} type="text" info="Format" value={data.format} />
+                                                                        <InputField size={size} type="text" info="Note" value={data.note} />
+                                                                        <InputField size={size} type="text" info="Banned" value={data.banned} />
 
-                                                                <div className="col-sm-4 mt-2 mb-2">
-                                                                    <button
-                                                                        className="btn form-control"
-                                                                        style={{
-                                                                            background: btnColor,
-                                                                            color: 'white'
-                                                                        }}
-                                                                        type="submit"
-                                                                        id="submit"
-                                                                    >
-                                                                        Update
-                                                                    </button>
-                                                                </div>
-                                                                <div className="col-sm-4 mt-2 mb-2">
-                                                                    <button
-                                                                        className="btn btn-outline-secondary form-control"
-                                                                        type="reset"
-                                                                        onClick={handleReset}
-                                                                    >
-                                                                        Reset
-                                                                    </button>
-                                                                </div>
+                                                                        <div className="col-sm-4 mt-2 mb-2">
+                                                                            <button className="btn btn-dark w-100" type="submit" id="submit">
+                                                                                Update
+                                                                            </button>
+                                                                        </div>
+                                                                        <div className="col-sm-4 mt-2 mb-2">
+                                                                            <button className="btn btn-outline-secondary w-100" type="reset" onClick={handleReset}>
+                                                                                Reset
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
                                                             </div>
-                                                        </form>
+                                                        </div>
                                                     )
                                                 }
                                             }

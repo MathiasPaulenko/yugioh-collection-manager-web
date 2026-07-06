@@ -38,7 +38,7 @@ export const SpellTrapCardDetail = ({ card }) => {
 
     return (
         <>
-            <div className="row m-6 mt-3 animate__animated animate__fadeInLeft shadow rounded" >
+            <div className="row mt-3 animate__animated animate__fadeInLeft shadow-sm rounded-3 overflow-hidden" >
 
                 <div className="col-sm-3 p-0 zoom-effect-1-3">
                     <div className="card card-block border-0">
@@ -57,12 +57,12 @@ export const SpellTrapCardDetail = ({ card }) => {
                                 })()
                             )
                         }
-                        <img className="card-img-top" src={`${LARGE_IMG_URL + img_code + IMG_EXT}`} alt={`Card ${serial_code}`}></img>
+                        <img className="card-img-top" src={`${LARGE_IMG_URL + img_code + IMG_EXT}`} alt={`Card ${serial_code}`} onError={({ currentTarget }) => { currentTarget.onerror = null; currentTarget.src = `${LARGE_IMG_URL}back_high.jpg`; }}></img>
                     </div>
 
                 </div>
                 <div className="col-sm-9">
-                    <div className="p-3 container">
+                    <div className="p-4">
                         <div className='row'>
                             <div className='col-sm-4'>
                                 <span className='col-sm-4'><strong>Language: </strong>

@@ -9,6 +9,8 @@ import { ReturnButton } from '../common/ReturnButton';
 import { Title } from '../common/Title';
 import { CardPrices } from '../common/card/CardPrices';
 import { usePrices } from '../../hooks/usePrices';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import { FaBoxes, FaBarcode, FaTag, FaDollarSign } from 'react-icons/fa'
 
 export const PricesScreen = () => {
     const location = useLocation();
@@ -19,7 +21,7 @@ export const PricesScreen = () => {
         searchText: q,
     });
 
-    const { loading, data } = usePrices(YGO_API, `?name=${q}`);
+    const { loading, data } = usePrices(YGO_API, '?name=' + q);
 
     let error = false;
     if (data && data.hasOwnProperty('error')) {
@@ -35,124 +37,82 @@ export const PricesScreen = () => {
 
     return (
         <>
-            <div className='row mt-3 align-items-center mb-3'>
+            <div className='row align-items-center mb-3'>
                 <div className='col-sm-8'>
                     <Title value='Prices' />
-                    <span>The minimum market prices of the cards will be displayed.</span>
+                    <p className="text-muted mb-0 small">Market prices across different platforms, with currency conversion.</p>
                 </div>
-
-                <div className="col-sm-4">
+                <div className="col-sm-4 text-end">
                     <ReturnButton value="Return" />
                 </div>
             </div>
-            <hr />
 
             <SearchCard
                 value={formValues}
                 handle={handleInputChange}
                 resetValue='/prices'
                 placeholder="Card Name"
-
             />
 
-            {
-                loading
-                    ?
-                    (
-                        <>
-                            <Loading />
-                        </>
-                    )
-                    :
-                    (
-                        <>
-                            {
-                                (() => {
-                                    if (error) {
-
-                                        return (
-                                            <div className="mt-3 alert alert-danger">
-                                                <span>No concurrency found: {q}</span>
-                                            </div>
-                                        )
-
-                                    } else if (!cardData) {
-                                        return (
-                                            <>
-                                                <div className="mt-3 alert alert-secondary">
-                                                    <span>The search is performed by the <strong>exact</strong> name of the card.</span>
-                                                </div>
-                                            </>
-                                        )
-                                    } else {
-                                        return (
-                                            <>
-                                                <div className="row mt-3 animate__animated animate__fadeIn">
-
-                                                    {
-                                                        cardData.map(card => (
-                                                            <CardPrices
-                                                                key={card.name}
-                                                                name={card.name}
-                                                                card_prices={card.card_prices}
-                                                                id={card.id}
-                                                            />
-
-                                                        ))
-                                                    }
-
-                                                    <h2 className='mt-3'>Card Sets</h2>
-                                                    <span className='mb-3'>Sets where the letter can be found.</span>
-                                                    <hr />
-                                                    {
-                                                        cardSets.map(set => (
-                                                            <div key={Math.random()} className="col-sm-4 mb-2 mt-2 align-items-center zoom-effect-1-01">
-                                                                <div className='shadow rounded'>
-                                                                    <div className='p-3' >
-                                                                        <h6 className='text-center'>{set.set_name}</h6>
-                                                                        <hr />
-                                                                        <div className='row mt-3 mb-3 align-items-center' style={{ minHeight: "230px" }}>
-                                                                            <div className='col-sm-1'></div>
-                                                                            <div className='col-sm-4'>
-                                                                                <a className="" href={`/cardset?q=${set.set_name}`}>
-                                                                                    <img
-                                                                                        src={`${YGO_IMG_SET}${(set.set_code).split("-")[0]}.jpg`}
-                                                                                        alt={set.set_name}
-                                                                                        style={{
-                                                                                            width: "100%"
-                                                                                        }}
-                                                                                        className="shadow rounded"
-                                                                                        onError={({ currentTarget }) => {
-                                                                                            currentTarget.onerror = null;
-                                                                                            currentTarget.src = `${YGO_PIC}back_high.jpg`;
-                                                                                        }}
-                                                                                    />
-                                                                                </a>
-                                                                            </div>
-                                                                            <div className='col-sm-7 text-justify align-items-center'>
-                                                                                <span><strong>Code: </strong></span> <span>{set.set_code}</span><br />
-                                                                                <span><strong>Rarity: </strong></span> <span>{set.set_rarity}</span><br />
-                                                                                <span><strong>Rarity Code: </strong></span> <span>{set.set_rarity_code}</span><br />
-                                                                                <span><strong>Set Price: </strong></span> <span>{`$ ${set.set_price}`}</span><br />
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-
-                                                        ))
-                                                    }
-
-                                                </div>
-                                            </>
-                                        )
-                                    }
-                                })()
+            {loading
+                ? <Loading />
+                : (
+                    <>
+                        {(() => {
+                            if (error) {
+                                return (
+                                    <div className="mt-3 alert alert-warning text-center">
+                                        No cards found: {q}
+                                    </div>
+                                )
+                            } else if (!cardData) {
+                                return (
+                                    <div className="mt-3 alert alert-secondary">
+                                        Search by the <strong>exact</strong> name of the card.
+                                    </div>
+                                )
                             }
-                        </>
-                    )
-            }
+                            return (
+                                <div className="mt-3 animate__animated animate__fadeIn">
+                                    {cardData.map(card => (
+                                        <CardPrices
+                                            key={card.name}
+                                            name={card.name}
+                                            card_prices={card.card_prices}
+                                            id={card.id}
+                                        />
+                                    ))}
 
+                                    <h5 className="search-section-title mt-4"><FaBoxes size={14} className="me-1" />Card Sets</h5>
+                                    <div className="search-sets-grid">
+                                        {cardSets.map(set => (
+                                            <div key={set.set_code} className="search-set-item">
+                                                <div className="prices-set-img-wrap">
+                                                    <a href={'/cardset?q=' + encodeURIComponent(set.set_name)}>
+                                                        <LazyLoadImage
+                                                            src={YGO_IMG_SET + set.set_code.split('-')[0] + '.jpg'}
+                                                            alt={set.set_name}
+                                                            className="prices-set-img"
+                                                            onError={({ currentTarget }) => {
+                                                                currentTarget.onerror = null;
+                                                                currentTarget.src = YGO_PIC + 'back_high.jpg';
+                                                            }}
+                                                        />
+                                                    </a>
+                                                </div>
+                                                <div className="search-set-code"><FaBarcode size={10} className="me-1" />{set.set_code}</div>
+                                                <div className="search-set-name">{set.set_name}</div>
+                                                <div className="search-set-rarity"><FaTag size={10} className="me-1" />{set.set_rarity}</div>
+                                                <div className="search-set-price"><FaDollarSign size={10} className="me-1" />{set.set_price}</div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )
+                        })()}
+                    </>
+                )
+            }
         </>
     )
 }
