@@ -1,0 +1,45 @@
+# === Python ===
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+*.egg
+
+# Django
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+db_back.sqlite3
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# === Node ===
+node_modules/
+/.pnp
+.pnp.js
+/coverage
+/build
+
+# === Env files ===
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# === IDE ===
+.idea/
+.vscode/
+.DS_Store
+
+# === Misc ===
+*.sqlite3
+test.json
+TODO.txt
+todo.txt
+test.py
