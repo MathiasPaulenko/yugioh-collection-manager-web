@@ -31,6 +31,7 @@ import { StapleScreen } from '../components/screens/StapleScreen';
 import { CardSetListscreen } from '../components/screens/CardSetListscreen';
 import { SearchCardScreen } from '../components/screens/SearchCardScreen';
 import { ArchetypesListScreen } from '../components/screens/ArchetypesListScreen';
+import { ArchetypeCardsScreen } from '../components/screens/ArchetypeCardsScreen';
 
 export const MainRoutes = () => {
 
@@ -38,7 +39,7 @@ export const MainRoutes = () => {
         <>
             <Navbar />
 
-            <div className="container">
+            <div className="container py-4 min-vh-100">
                 <Routes>
 
                     <Route path="/" element={<CollectionsScreen />} />
@@ -56,6 +57,7 @@ export const MainRoutes = () => {
                     <Route path="/cardsetlist" element={<CardSetListscreen />} />
                     <Route path="/search_card" element={<SearchCardScreen />} />
                     <Route path="/archetypes_list" element={<ArchetypesListScreen />} />
+                    <Route path="/archetype_cards" element={<ArchetypeCardsScreen />} />
 
                     <Route path="/add" element={<AddCardScreen />} />
                     <Route path="/add/normal" element={<NormalAddCardScreen />} />

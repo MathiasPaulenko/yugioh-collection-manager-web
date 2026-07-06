@@ -1,9 +1,9 @@
 export const BASE_URL = 'http://127.0.0.1:8000/';
 
-export const LARGE_IMG_URL = 'https://storage.googleapis.com/ygoprodeck.com/pics/';
-export const SHORT_IMG_URL = 'https://storage.googleapis.com/ygoprodeck.com/pics_small/';
-export const YGO_IMG_SET = 'https://ygoprodeck.com/pics_sets/'
-export const YGO_PIC = 'https://ygoprodeck.com/pics/'
+export const LARGE_IMG_URL = 'https://images.ygoprodeck.com/images/cards/';
+export const SHORT_IMG_URL = 'https://images.ygoprodeck.com/images/cards_small/';
+export const YGO_IMG_SET = 'https://images.ygoprodeck.com/images/sets/'
+export const YGO_PIC = 'https://images.ygoprodeck.com/images/cards/'
 export const IMG_EXT = '.jpg';
 
 export const YGO_API = 'https://db.ygoprodeck.com/api/v7/cardinfo.php'
