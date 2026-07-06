@@ -39,7 +39,4 @@ node_modules/
 
 # === Misc ===
 *.sqlite3
-test.json
-TODO.txt
-todo.txt
-test.py
+
