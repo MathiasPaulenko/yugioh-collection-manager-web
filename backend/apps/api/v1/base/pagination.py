@@ -6,7 +6,7 @@ class StandardResultsSetPagination(PageNumberPagination):
     page_query_param = "offset"  # this is the "page"
     page_size_query_param = "limit"  # this is the "page_size"
     max_page_size = 5000
-    page_size = 120
+    page_size = 60
 
     def get_paginated_response(self, data):
         return Response(

@@ -1,4 +1,5 @@
 import requests
+from django.core.cache import cache
 from django.db.models import F
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, status
@@ -28,10 +29,37 @@ class CardViewSet(viewsets.ModelViewSet):
     serializer_class = CardSerializer
     lookup_field = "serial_code__iexact"
     lookup_value_regex = '[^/]+'
-    queryset = Card.objects.all()
     filter_backends = (DjangoFilterBackend,)
     filterset_class = filters.CardFilter
     http_method_names = ['get', 'post', 'delete']
+
+    def get_queryset(self):
+        return Card.objects.select_related(
+            'type', 'subtype', 'rarity',
+            'skillcard',
+            'magictrapcard', 'magictrapcard__race',
+            'monster', 'monster__race', 'monster__attribute',
+            'monster__generalmonster',
+            'monster__linkmonster',
+            'monster__pendulummonster',
+        ).prefetch_related('monster__linkmonster__link_markers')
+
+    def list(self, request, *args, **kwargs):
+        query_string = request.GET.urlencode()
+        has_search = any(
+            request.GET.get(k) for k in ('name', 'serial_code', 'card_number', 'archetype', 'description')
+        )
+        if has_search:
+            return super().list(request, *args, **kwargs)
+
+        cache_key = f'coll_list_{query_string}'
+        cached = cache.get(cache_key)
+        if cached is not None:
+            return Response(cached)
+
+        response = super().list(request, *args, **kwargs)
+        cache.set(cache_key, response.data, 60)
+        return response
 
 
 class CreateUpdateCardViewSet(APIView):
@@ -185,32 +213,25 @@ class RepeatedByNameCardViewSet(APIView):
 
     @staticmethod
     def get(request):
-        card_numbers = list(Card.objects.filter().values_list('card_number', flat=True).distinct())
-        card_numbers = list(set(card_numbers))
+        from django.db.models import Sum, F
 
-        response_card = []
-        final_response = {'data': response_card}
+        repeated = (
+            Card.objects.values('card_number', 'name')
+            .annotate(total_amount=Sum('amount'))
+            .filter(total_amount__gt=3)
+            .order_by('-total_amount')
+        )
 
-        for card_number in card_numbers:
-            card = Card.objects.filter(card_number=card_number)
-
-            repeated = {
-                'card_number': "",
-                'name': "",
-                'amount': 0
+        response_card = [
+            {
+                'card_number': item['card_number'],
+                'name': item['name'],
+                'amount': item['total_amount'],
             }
+            for item in repeated
+        ]
 
-            for query in card:
-                iter_card = Card.objects.filter(serial_code=query.serial_code).first()
-
-                repeated['card_number'] = iter_card.card_number
-                repeated['name'] = iter_card.name
-                repeated['amount'] += iter_card.amount
-
-            if repeated['amount'] > 3:
-                final_response['data'].append(repeated)
-
-        return Response(final_response, status=status.HTTP_200_OK)
+        return Response({'data': response_card}, status=status.HTTP_200_OK)
 
 
 class TotalPricesCardViewSet(APIView):

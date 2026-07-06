@@ -16,24 +16,26 @@ from apps.api.v1.card.api.serializers.skill_serializer import SkillCardSerialize
 
 def get_data_from_card_type(instance):
     card_type = instance.type
-    card_serial_code = instance.serial_code
     if str(card_type).lower() == 'skill':
-        card_filter = SkillCard.objects.filter(serial_code=card_serial_code).first()
-        return SkillCardSerializer(card_filter).data
+        card = getattr(instance, 'skillcard', None)
+        return SkillCardSerializer(card).data if card else {}
     elif str(card_type).lower() in ['spell', 'trap']:
-        card_filter = MagicTrapCard.objects.filter(serial_code=card_serial_code).first()
-        return MagicTrapCardSerializer(card_filter).data
+        card = getattr(instance, 'magictrapcard', None)
+        return MagicTrapCardSerializer(card).data if card else {}
     else:
         card_subtype = instance.subtype
+        monster = getattr(instance, 'monster', None)
+        if not monster:
+            return {}
         if 'pendulum' in str(card_subtype).lower():
-            card_filter = PendulumMonster.objects.filter(serial_code=card_serial_code).first()
-            return PendulumMonsterSerializer(card_filter).data
+            card = getattr(monster, 'pendulummonster', None)
+            return PendulumMonsterSerializer(card).data if card else {}
         elif 'link' in str(card_subtype).lower():
-            card_filter = LinkMonster.objects.filter(serial_code=card_serial_code).first()
-            return LinkMonsterSerializer(card_filter).data
+            card = getattr(monster, 'linkmonster', None)
+            return LinkMonsterSerializer(card).data if card else {}
         else:
-            card_filter = GeneralMonster.objects.filter(serial_code=card_serial_code).first()
-            return GeneralMonsterSerializer(card_filter).data
+            card = getattr(monster, 'generalmonster', None)
+            return GeneralMonsterSerializer(card).data if card else {}
 
 
 def get_choices_inverted(data_choices):
@@ -82,159 +84,104 @@ def combine_queryset(queryset, query, serial_code):
 
 
 def get_card_for_level(serial_codes, value):
-    queryset = Card.objects.none()
     try:
-        for serial_code in serial_codes:
-            card = Card.objects.filter(serial_code=serial_code).first()
-
-            if 'pendulum' in str(card.subtype).lower():
-                query = PendulumMonster.objects.filter(serial_code=serial_code, level=value)
-                queryset = combine_queryset(queryset, query, serial_code)
-            elif 'link' in str(card.subtype).lower():
-                query = LinkMonster.objects.filter(serial_code=serial_code, link_value=int(value))
-                queryset = combine_queryset(queryset, query, serial_code)
-            else:
-                query = GeneralMonster.objects.filter(serial_code=serial_code, level=value)
-                queryset = combine_queryset(queryset, query, serial_code)
-
+        from django.db.models import Q
+        gm = GeneralMonster.objects.filter(serial_code__in=serial_codes, level=value).values_list('serial_code', flat=True)
+        lm = LinkMonster.objects.filter(serial_code__in=serial_codes, link_value=int(value)).values_list('serial_code', flat=True)
+        pm = PendulumMonster.objects.filter(serial_code__in=serial_codes, level=value).values_list('serial_code', flat=True)
+        matched = set(gm) | set(lm) | set(pm)
+        return Card.objects.filter(serial_code__in=matched)
     except (Exception,):
         return Card.objects.none()
-    return queryset
 
 
 def get_card_for_archetype(serial_codes, value):
-    queryset = Card.objects.none()
     try:
-        for serial_code in serial_codes:
-            card = Card.objects.filter(serial_code=serial_code).first()
-            if str(card.type).lower() in ['spell', 'trap']:
-                query = MagicTrapCard.objects.filter(serial_code=serial_code, archetype__icontains=value)
-                queryset = combine_queryset(queryset, query, serial_code)
-            else:
-                if 'pendulum' in str(card.subtype).lower():
-                    query = PendulumMonster.objects.filter(serial_code=serial_code, archetype__icontains=value)
-                    queryset = combine_queryset(queryset, query, serial_code)
-                elif 'link' in str(card.subtype).lower():
-                    query = LinkMonster.objects.filter(serial_code=serial_code, archetype__icontains=value)
-                    queryset = combine_queryset(queryset, query, serial_code)
-                else:
-                    query = GeneralMonster.objects.filter(serial_code=serial_code, archetype__icontains=value)
-                    queryset = combine_queryset(queryset, query, serial_code)
-
+        gm = GeneralMonster.objects.filter(serial_code__in=serial_codes, archetype__icontains=value).values_list('serial_code', flat=True)
+        lm = LinkMonster.objects.filter(serial_code__in=serial_codes, archetype__icontains=value).values_list('serial_code', flat=True)
+        pm = PendulumMonster.objects.filter(serial_code__in=serial_codes, archetype__icontains=value).values_list('serial_code', flat=True)
+        mt = MagicTrapCard.objects.filter(serial_code__in=serial_codes, archetype__icontains=value).values_list('serial_code', flat=True)
+        matched = set(gm) | set(lm) | set(pm) | set(mt)
+        return Card.objects.filter(serial_code__in=matched)
     except (Exception,):
         return Card.objects.none()
-    return queryset
 
 
 def get_card_for_desc(serial_codes, value):
-    queryset = Card.objects.none()
     try:
-        for serial_code in serial_codes:
-            card = Card.objects.filter(serial_code=serial_code).first()
-            if str(card.type).lower() in ['spell', 'trap']:
-                query = MagicTrapCard.objects.filter(serial_code=serial_code, description__icontains=value)
-                queryset = combine_queryset(queryset, query, serial_code)
-            elif str(card.type).lower() == 'skill':
-                query = SkillCard.objects.filter(serial_code=serial_code, description__icontains=value)
-                queryset = combine_queryset(queryset, query, serial_code)
-            else:
-                if 'pendulum' in str(card.subtype).lower():
-                    query = PendulumMonster.objects.filter(serial_code=serial_code, description__icontains=value)
-                    queryset = combine_queryset(queryset, query, serial_code)
-                elif 'link' in str(card.subtype).lower():
-                    query = LinkMonster.objects.filter(serial_code=serial_code, description__icontains=value)
-                    queryset = combine_queryset(queryset, query, serial_code)
-                else:
-                    query = GeneralMonster.objects.filter(serial_code=serial_code, description__icontains=value)
-                    queryset = combine_queryset(queryset, query, serial_code)
-
+        gm = GeneralMonster.objects.filter(serial_code__in=serial_codes, description__icontains=value).values_list('serial_code', flat=True)
+        lm = LinkMonster.objects.filter(serial_code__in=serial_codes, description__icontains=value).values_list('serial_code', flat=True)
+        pm = PendulumMonster.objects.filter(serial_code__in=serial_codes, description__icontains=value).values_list('serial_code', flat=True)
+        mt = MagicTrapCard.objects.filter(serial_code__in=serial_codes, description__icontains=value).values_list('serial_code', flat=True)
+        sk = SkillCard.objects.filter(serial_code__in=serial_codes, description__icontains=value).values_list('serial_code', flat=True)
+        matched = set(gm) | set(lm) | set(pm) | set(mt) | set(sk)
+        return Card.objects.filter(serial_code__in=matched)
     except (Exception,):
         return Card.objects.none()
-    return queryset
 
 
 def get_card_for_attack(serial_codes, value):
-    queryset = Card.objects.none()
     try:
-        for serial_code in serial_codes:
-            card = Card.objects.filter(serial_code=serial_code).first()
-            if 'pendulum' in str(card.subtype).lower():
-                query = PendulumMonster.objects.filter(serial_code=serial_code, attack=value)
-                queryset = combine_queryset(queryset, query, serial_code)
-            elif 'link' in str(card.subtype).lower():
-                query = LinkMonster.objects.filter(serial_code=serial_code, attack=value)
-                queryset = combine_queryset(queryset, query, serial_code)
-            else:
-                query = GeneralMonster.objects.filter(serial_code=serial_code, attack=value)
-                queryset = combine_queryset(queryset, query, serial_code)
-
+        gm = GeneralMonster.objects.filter(serial_code__in=serial_codes, attack=value).values_list('serial_code', flat=True)
+        lm = LinkMonster.objects.filter(serial_code__in=serial_codes, attack=value).values_list('serial_code', flat=True)
+        pm = PendulumMonster.objects.filter(serial_code__in=serial_codes, attack=value).values_list('serial_code', flat=True)
+        matched = set(gm) | set(lm) | set(pm)
+        return Card.objects.filter(serial_code__in=matched)
     except (Exception,):
         return Card.objects.none()
-    return queryset
 
 
 def get_card_for_defence(serial_codes, value):
-    queryset = Card.objects.none()
     try:
-        for serial_code in serial_codes:
-            card = Card.objects.filter(serial_code=serial_code).first()
-            if 'pendulum' in str(card.subtype).lower():
-                query = PendulumMonster.objects.filter(serial_code=serial_code, defence=value)
-                queryset = combine_queryset(queryset, query, serial_code)
-            else:
-                query = GeneralMonster.objects.filter(serial_code=serial_code, defence=value)
-                queryset = combine_queryset(queryset, query, serial_code)
-
+        gm = GeneralMonster.objects.filter(serial_code__in=serial_codes, defence=value).values_list('serial_code', flat=True)
+        pm = PendulumMonster.objects.filter(serial_code__in=serial_codes, defence=value).values_list('serial_code', flat=True)
+        matched = set(gm) | set(pm)
+        return Card.objects.filter(serial_code__in=matched)
     except (Exception,):
         return Card.objects.none()
-    return queryset
 
 
 def get_card_for_race(serial_codes, value):
-    queryset = Card.objects.none()
     try:
-        for serial_code in serial_codes:
-            card = Card.objects.filter(serial_code=serial_code).first()
-            if str(card.type).lower() in ['spell', 'trap']:
-                query = get_choice_race_query(MagicTrapCard.objects, serial_code, value, choices.MAGIC_TRAP_RACE)
-                queryset = combine_queryset(queryset, query, serial_code)
-            elif str(card.type).lower() == 'skill':
-                query = SkillCard.objects.filter(serial_code=serial_code, race__icontains=value)
-                queryset = combine_queryset(queryset, query, serial_code)
-            else:
-                if 'pendulum' in str(card.subtype).lower():
-                    query = get_choice_race_query(PendulumMonster.objects, serial_code, value, choices.MONSTER_RACE)
-                    queryset = combine_queryset(queryset, query, serial_code)
-                elif 'link' in str(card.subtype).lower():
-                    query = get_choice_race_query(LinkMonster.objects, serial_code, value, choices.MONSTER_RACE)
-                    queryset = combine_queryset(queryset, query, serial_code)
-                else:
-                    query = get_choice_race_query(GeneralMonster.objects, serial_code, value, choices.MONSTER_RACE)
-                    queryset = combine_queryset(queryset, query, serial_code)
+        races = get_choices_inverted(choices.MONSTER_RACE)
+        magic_races = get_choices_inverted(choices.MAGIC_TRAP_RACE)
+        matched = set()
 
-    except(Exception,):
+        try:
+            race_id = races[str(value).lower()]
+            gm = GeneralMonster.objects.filter(serial_code__in=serial_codes, race=race_id).values_list('serial_code', flat=True)
+            lm = LinkMonster.objects.filter(serial_code__in=serial_codes, race=race_id).values_list('serial_code', flat=True)
+            pm = PendulumMonster.objects.filter(serial_code__in=serial_codes, race=race_id).values_list('serial_code', flat=True)
+            matched |= set(gm) | set(lm) | set(pm)
+        except KeyError:
+            pass
+
+        try:
+            magic_race_id = magic_races[str(value).lower()]
+            mt = MagicTrapCard.objects.filter(serial_code__in=serial_codes, race=magic_race_id).values_list('serial_code', flat=True)
+            matched |= set(mt)
+        except KeyError:
+            pass
+
+        sk = SkillCard.objects.filter(serial_code__in=serial_codes, race__icontains=value).values_list('serial_code', flat=True)
+        matched |= set(sk)
+
+        return Card.objects.filter(serial_code__in=matched)
+    except (Exception,):
         return Card.objects.none()
-    return queryset
 
 
 def get_card_for_attribute(serial_codes, value):
-    queryset = Card.objects.none()
     try:
-        for serial_code in serial_codes:
-            card = Card.objects.filter(serial_code=serial_code).first()
-            if 'pendulum' in str(card.subtype).lower():
-                query = get_choice_attribute_query(PendulumMonster.objects, serial_code, value, choices.CARD_ATTRIBUTE)
-                queryset = combine_queryset(queryset, query, serial_code)
-            elif 'link' in str(card.subtype).lower():
-                query = get_choice_attribute_query(LinkMonster.objects, serial_code, value, choices.CARD_ATTRIBUTE)
-                queryset = combine_queryset(queryset, query, serial_code)
-            else:
-                query = get_choice_attribute_query(GeneralMonster.objects, serial_code, value, choices.CARD_ATTRIBUTE)
-                queryset = combine_queryset(queryset, query, serial_code)
-
+        attr_map = {str(y).lower(): x for x, y in dict(choices.CARD_ATTRIBUTE).items()}
+        attr_id = attr_map[str(value).lower()]
+        gm = GeneralMonster.objects.filter(serial_code__in=serial_codes, attribute=attr_id).values_list('serial_code', flat=True)
+        lm = LinkMonster.objects.filter(serial_code__in=serial_codes, attribute=attr_id).values_list('serial_code', flat=True)
+        pm = PendulumMonster.objects.filter(serial_code__in=serial_codes, attribute=attr_id).values_list('serial_code', flat=True)
+        matched = set(gm) | set(lm) | set(pm)
+        return Card.objects.filter(serial_code__in=matched)
     except (Exception,):
         return Card.objects.none()
-    return queryset
 
 
 def invert_general_choice_info(request_data):

@@ -1,4 +1,5 @@
 from django_filters import rest_framework as filters, OrderingFilter
+from django.db.models import Min
 
 from apps.api.v1.card.models import Card
 from apps.api.v1.card import choices
@@ -133,7 +134,9 @@ class CardFilter(filters.FilterSet):
 
     @staticmethod
     def is_distinct(queryset, name, value):
-        card_numbers = list(queryset.values_list('card_number', flat=True).distinct())
         if value.lower() == "true":
-            card_numbers = list(set(card_numbers))
-        return fixtures.get_card_distinct(card_numbers)
+            distinct_ids = queryset.values('card_number').annotate(
+                min_id=Min('id')
+            ).values_list('min_id', flat=True)
+            return queryset.filter(id__in=list(distinct_ids))
+        return queryset
